@@ -7,8 +7,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout DemoReverbAudioProcessor::cr
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("LowCut", "LowCut", juce::NormalisableRange(20.0f, 500.0f, 1.0f, 0.6f), 120.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>("HighCut", "HighCut", juce::NormalisableRange(800.0f, 20000.0f, 1.0f, 0.6f), 8000.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Size", "Size", juce::NormalisableRange(0.0f, 100.0f, 1.0f, 1.0f), 100.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Mix", "Mix", juce::NormalisableRange(0.0f, 100.0f, 1.0f, 1.0f), 100.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("RoomSize", "RoomSize", juce::NormalisableRange(0.0f, 100.0f, 1.0f, 1.0f), 80.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Damping", "Damping", juce::NormalisableRange(0.0f, 100.0f, 1.0f, 1.0f), 100.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("WetLevel", "WetLevel", juce::NormalisableRange(0.0f, 100.0f, 1.0f, 1.0f), 70.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("DryLevel", "DryLevel", juce::NormalisableRange(0.0f, 100.0f, 1.0f, 1.0f), 90.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Width", "Width", juce::NormalisableRange(0.0f, 100.0f, 1.0f, 1.0f), 100.0f));
 
     return layout;
 }
