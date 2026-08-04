@@ -1,6 +1,18 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+juce::AudioProcessorValueTreeState::ParameterLayout DemoReverbAudioProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("LowCut", "LowCut", juce::NormalisableRange(20.0f, 500.0f, 1.0f, 0.6f), 120.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("HighCut", "HighCut", juce::NormalisableRange(800.0f, 20000.0f, 1.0f, 0.6f), 8000.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Size", "Size", juce::NormalisableRange(0.0f, 100.0f, 1.0f, 1.0f), 100.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Mix", "Mix", juce::NormalisableRange(0.0f, 100.0f, 1.0f, 1.0f), 100.0f));
+
+    return layout;
+}
+
 DemoReverbAudioProcessor::DemoReverbAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
