@@ -44,8 +44,14 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DemoReverbAudioProcessor)
 
     using Filter = juce::dsp::IIR::Filter<float>;
+    using FilterDuplicator = juce::dsp::ProcessorDuplicator< Filter, juce::dsp::IIR::Coefficients<float> >;
 
-    juce::dsp::ProcessorDuplicator<Filter, juce::dsp::IIR::Coefficients<float>> lowcut, highcut;
+    enum
+    {
+        reverbIndex,
+        lowCutIndex,
+        highCutIndex
+    };
 
-    juce::dsp::Reverb reverb;
+    juce::dsp::ProcessorChain < juce::dsp::Reverb, FilterDuplicator, FilterDuplicator > chain;
 };

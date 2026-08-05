@@ -94,7 +94,6 @@ void DemoReverbAudioProcessor::changeProgramName (int index, const juce::String&
 {
 }
 
-//==============================================================================
 void DemoReverbAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
 
