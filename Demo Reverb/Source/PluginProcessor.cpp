@@ -16,6 +16,30 @@ juce::AudioProcessorValueTreeState::ParameterLayout DemoReverbAudioProcessor::cr
     return layout;
 }
 
+void DemoReverbAudioProcessor::updateParametes()
+{
+    // Filters
+    auto lowCutFreq = apvts.getRawParameterValue("LowCut")->load();
+    auto highCutFreq = apvts.getRawParameterValue("HighCut")->load();
+
+    *chain.get<lowCutIndex>().state =
+        *juce::dsp::IIR::Coefficients<float>::makeHighPass(getSampleRate(), lowCutFreq);
+    *chain.get<highCutIndex>().state =
+        *juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), highCutFreq);
+
+    // Reverb (convert range 1.0f - 100.0f
+    //                                     to 0.0f - 1.0f)
+    juce::dsp::Reverb::Parameters reverbParams;
+
+    reverbParams.roomSize = apvts.getRawParameterValue("RoomSize")->load() / 100.0f;
+    reverbParams.damping = apvts.getRawParameterValue("Damping")->load() / 100.0f;
+    reverbParams.wetLevel = apvts.getRawParameterValue("WetLevel")->load() / 100.0f;
+    reverbParams.dryLevel = apvts.getRawParameterValue("DryLevel")->load() / 100.0f;
+    reverbParams.width = apvts.getRawParameterValue("Width")->load() / 100.0f;
+
+    chain.get<reverbIndex>().setParameters(reverbParams);
+}
+
 DemoReverbAudioProcessor::DemoReverbAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
@@ -141,6 +165,8 @@ void DemoReverbAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    updateParametes();
+
     juce::dsp::AudioBlock<float> block(buffer);
     juce::dsp::ProcessContextReplacing<float> context(block);
 
@@ -159,12 +185,18 @@ juce::AudioProcessorEditor* DemoReverbAudioProcessor::createEditor()
 
 void DemoReverbAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    
+    juce::MemoryOutputStream mos(destData, true);
+    apvts.state.writeToStream(mos);
 }
 
 void DemoReverbAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    
+    auto tree = juce::ValueTree::readFromData(data, sizeInBytes);
+
+    if (tree.isValid()) {
+        apvts.replaceState(tree);
+        updateParametes();
+    }
 }
 
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
