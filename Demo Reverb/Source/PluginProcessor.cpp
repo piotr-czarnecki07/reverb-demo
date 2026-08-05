@@ -96,7 +96,13 @@ void DemoReverbAudioProcessor::changeProgramName (int index, const juce::String&
 
 void DemoReverbAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    juce::dsp::ProcessSpec spec;
 
+    spec.maximumBlockSize = (juce::uint32) samplesPerBlock;
+    spec.numChannels = (juce::uint32) getTotalNumOutputChannels();
+    spec.sampleRate = sampleRate;
+
+    chain.prepare(spec);
 }
 
 void DemoReverbAudioProcessor::releaseResources()
