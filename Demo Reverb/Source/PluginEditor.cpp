@@ -51,7 +51,11 @@ DemoReverbAudioProcessorEditor::~DemoReverbAudioProcessorEditor()
 
 void DemoReverbAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    
+    g.fillAll(backgroundColor);
+
+    g.setColour(foregroundColor);
+    g.setFont(47.0f);
+    g.drawText("Reverbed", 20, 10, 460, 90, juce::Justification::centred);
 }
 
 void DemoReverbAudioProcessorEditor::resized()

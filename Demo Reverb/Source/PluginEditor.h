@@ -51,5 +51,9 @@ private:
         wetLevelSliderAttachment,
         widthSliderAttachment;
 
+    // Color definition
+    juce::Colour const foregroundColor = juce::Colour::fromString("fff5f5f5");
+    juce::Colour const backgroundColor = juce::Colour::fromString("ff202020");
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoReverbAudioProcessorEditor)
 };
