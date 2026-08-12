@@ -39,6 +39,7 @@ private:
 
     std::vector<juce::Component*> getReverbComponents();
     std::vector<juce::Component*> getEqComponents();
+    std::vector<juce::Slider*> getReverbSliders();
 
     using apvts = juce::AudioProcessorValueTreeState;
     using Attachment = apvts::SliderAttachment;
@@ -51,9 +52,12 @@ private:
         wetLevelSliderAttachment,
         widthSliderAttachment;
 
-    // Color definition
+    // Colors definition
     juce::Colour const foregroundColor = juce::Colour::fromString("fff5f5f5");
     juce::Colour const backgroundColor = juce::Colour::fromString("ff202020");
+
+    juce::Colour const sliderBackgroundColor = juce::Colour::fromString("ffe6e6e6");
+    juce::Colour const reverbSliderTextBoxColor = juce::Colour::fromString("ff855d99");
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoReverbAudioProcessorEditor)
 };

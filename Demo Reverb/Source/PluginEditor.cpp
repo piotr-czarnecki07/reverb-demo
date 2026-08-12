@@ -20,6 +20,17 @@ std::vector<juce::Component*> DemoReverbAudioProcessorEditor::getEqComponents()
     };
 }
 
+std::vector<juce::Slider*> DemoReverbAudioProcessorEditor::getReverbSliders()
+{
+    return {
+        &roomSizeSlider,
+        &dampingSlider,
+        &dryLevelSlider,
+        &wetLevelSlider,
+        &widthSlider
+    };
+}
+
 DemoReverbAudioProcessorEditor::DemoReverbAudioProcessorEditor (DemoReverbAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
     lowCutSliderAttachment(audioProcessor.apvts, "LowCut", lowCutSlider),
@@ -43,6 +54,16 @@ DemoReverbAudioProcessorEditor::DemoReverbAudioProcessorEditor (DemoReverbAudioP
 
     reverbSliderGroup.setColour(juce::GroupComponent::outlineColourId, juce::Colours::transparentBlack);
     eqSliderGroup.setColour(juce::GroupComponent::outlineColourId, juce::Colours::transparentBlack);
+
+    for (auto* slider : getReverbSliders()) {
+        slider->setColour(juce::Slider::textBoxOutlineColourId, sliderBackgroundColor);
+
+        slider->setColour(juce::Slider::thumbColourId, backgroundColor);
+        slider->setColour(juce::Slider::trackColourId, sliderBackgroundColor);
+
+        slider->setColour(juce::Slider::textBoxTextColourId, reverbSliderTextBoxColor);
+        slider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 10, 5);
+    }
 }
 
 DemoReverbAudioProcessorEditor::~DemoReverbAudioProcessorEditor()
