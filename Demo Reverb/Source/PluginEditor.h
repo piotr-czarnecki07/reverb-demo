@@ -8,7 +8,7 @@ struct ReverbSlider : juce::Slider // vertical bar slider, typical for classic r
     ReverbSlider() : juce::Slider(juce::Slider::SliderStyle::LinearBarVertical, juce::Slider::TextEntryBoxPosition::NoTextBox) {}
 };
 
-struct EqSlider : juce::Slider
+struct EqSlider : juce::Slider // rotery slider, typical for equalization
 {
     EqSlider() : juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::TextEntryBoxPosition::NoTextBox) {}
 };
@@ -40,6 +40,7 @@ private:
     std::vector<juce::Component*> getReverbComponents();
     std::vector<juce::Component*> getEqComponents();
     std::vector<juce::Slider*> getReverbSliders();
+    std::vector<juce::Slider*> getEqSliders();
 
     using apvts = juce::AudioProcessorValueTreeState;
     using Attachment = apvts::SliderAttachment;
@@ -57,6 +58,7 @@ private:
     juce::Colour const backgroundColor = juce::Colour::fromString("ff202020");
 
     juce::Colour const sliderBackgroundColor = juce::Colour::fromString("ffe6e6e6");
+    juce::Colour const roterySliderThumbColor = juce::Colour::fromString("ffd5d5d5");
     juce::Colour const reverbSliderTextBoxColor = juce::Colour::fromString("ff855d99");
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoReverbAudioProcessorEditor)

@@ -31,6 +31,14 @@ std::vector<juce::Slider*> DemoReverbAudioProcessorEditor::getReverbSliders()
     };
 }
 
+std::vector<juce::Slider*> DemoReverbAudioProcessorEditor::getEqSliders()
+{
+    return {
+        &lowCutSlider,
+        &highCutSlider
+    };
+}
+
 DemoReverbAudioProcessorEditor::DemoReverbAudioProcessorEditor (DemoReverbAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
     lowCutSliderAttachment(audioProcessor.apvts, "LowCut", lowCutSlider),
@@ -56,13 +64,20 @@ DemoReverbAudioProcessorEditor::DemoReverbAudioProcessorEditor (DemoReverbAudioP
     eqSliderGroup.setColour(juce::GroupComponent::outlineColourId, juce::Colours::transparentBlack);
 
     for (auto* slider : getReverbSliders()) {
-        slider->setColour(juce::Slider::textBoxOutlineColourId, sliderBackgroundColor);
+        slider->setColour(juce::Slider::textBoxOutlineColourId, sliderBackgroundColor); // ramka
 
-        slider->setColour(juce::Slider::thumbColourId, backgroundColor);
-        slider->setColour(juce::Slider::trackColourId, sliderBackgroundColor);
+        slider->setColour(juce::Slider::thumbColourId, backgroundColor); // wolny obszar
+        slider->setColour(juce::Slider::trackColourId, sliderBackgroundColor); // zakreslony obszar
 
         slider->setColour(juce::Slider::textBoxTextColourId, reverbSliderTextBoxColor);
         slider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 10, 5);
+    }
+
+    for (auto* slider : getEqSliders()) {
+        slider->setColour(juce::Slider::thumbColourId, roterySliderThumbColor); // pokrętło
+        slider->setColour(juce::Slider::rotarySliderFillColourId, foregroundColor); // zakreślony obszar (obecny)
+
+        slider->setColour(juce::Slider::rotarySliderOutlineColourId, juce::Colours::black); // rotery background (niezaznaczony obszar)
     }
 }
 
@@ -76,27 +91,29 @@ void DemoReverbAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour(foregroundColor);
     g.setFont(47.0f);
-    g.drawText("Reverbed", 20, 10, 460, 90, juce::Justification::centred);
+    g.drawText("Reverbed", 20, 10, 460, 50, juce::Justification::centred);
 }
 
 void DemoReverbAudioProcessorEditor::resized()
 {
-    reverbSliderGroup.setBounds(20, 110, 460, 90);
-
+    // reverb sliders placement
+    reverbSliderGroup.setBounds(20, 90, 460, 90);
     auto reverbArea = reverbSliderGroup.getLocalBounds();
 
     int w = reverbArea.getWidth() / 5;
+
     roomSizeSlider.setBounds(reverbArea.removeFromLeft(w).reduced(5));
     dampingSlider.setBounds(reverbArea.removeFromLeft(w).reduced(5));
     dryLevelSlider.setBounds(reverbArea.removeFromLeft(w).reduced(5));
     wetLevelSlider.setBounds(reverbArea.removeFromLeft(w).reduced(5));
     widthSlider.setBounds(reverbArea.reduced(5));
 
+    // eq sliders placement
     eqSliderGroup.setBounds(20, 220, 460, 70);
-
     auto eqArea = eqSliderGroup.getLocalBounds();
 
     w = eqArea.getWidth() / 2;
+
     lowCutSlider.setBounds(eqArea.removeFromLeft(w).reduced(5));
     highCutSlider.setBounds(eqArea.reduced(5));
 }
