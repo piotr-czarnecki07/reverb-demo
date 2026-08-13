@@ -98,6 +98,9 @@ DemoReverbAudioProcessorEditor::DemoReverbAudioProcessorEditor (DemoReverbAudioP
         slider->setColour(juce::Slider::rotarySliderFillColourId, foregroundColor); // zakreślony obszar (obecny)
 
         slider->setColour(juce::Slider::rotarySliderOutlineColourId, juce::Colours::black); // rotery background (niezaznaczony obszar)
+
+        slider->setColour(juce::Slider::textBoxTextColourId, foregroundColor);
+        slider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
     }
 
     // Labels settings
