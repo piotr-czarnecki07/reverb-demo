@@ -26,7 +26,9 @@ private:
     DemoReverbAudioProcessor& audioProcessor;
 
     juce::GroupComponent reverbSliderGroup,
-        eqSliderGroup;
+        eqSliderGroup,
+        reverbLabelGroup,
+        eqLabelGroup;
 
     EqSlider lowCutSlider,
         highCutSlider;
@@ -37,10 +39,20 @@ private:
         wetLevelSlider,
         widthSlider;
 
+    juce::Label lowCutLabel,
+        highCutLabel,
+        roomSizeLabel,
+        dampingLabel,
+        dryLevelLabel,
+        wetLevelLabel,
+        widthLabel;
+
     std::vector<juce::Component*> getReverbComponents();
     std::vector<juce::Component*> getEqComponents();
     std::vector<juce::Slider*> getReverbSliders();
     std::vector<juce::Slider*> getEqSliders();
+    std::vector<juce::Label*> getReverbLabels();
+    std::vector<juce::Label*> getEqLabels();
 
     using apvts = juce::AudioProcessorValueTreeState;
     using Attachment = apvts::SliderAttachment;

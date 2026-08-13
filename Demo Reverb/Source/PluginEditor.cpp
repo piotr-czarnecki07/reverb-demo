@@ -39,6 +39,25 @@ std::vector<juce::Slider*> DemoReverbAudioProcessorEditor::getEqSliders()
     };
 }
 
+std::vector<juce::Label*> DemoReverbAudioProcessorEditor::getReverbLabels()
+{
+    return {
+        &roomSizeLabel,
+        &dampingLabel,
+        &dryLevelLabel,
+        &wetLevelLabel,
+        &widthLabel
+    };
+}
+
+std::vector<juce::Label*> DemoReverbAudioProcessorEditor::getEqLabels()
+{
+    return {
+        &lowCutLabel,
+        &highCutLabel
+    };
+}
+
 DemoReverbAudioProcessorEditor::DemoReverbAudioProcessorEditor (DemoReverbAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
     lowCutSliderAttachment(audioProcessor.apvts, "LowCut", lowCutSlider),
@@ -51,6 +70,7 @@ DemoReverbAudioProcessorEditor::DemoReverbAudioProcessorEditor (DemoReverbAudioP
 {
     setSize (500, 300);
 
+    // Reverb and Eq sliders settings
     addAndMakeVisible(reverbSliderGroup);
     addAndMakeVisible(eqSliderGroup);
 
@@ -79,6 +99,32 @@ DemoReverbAudioProcessorEditor::DemoReverbAudioProcessorEditor (DemoReverbAudioP
 
         slider->setColour(juce::Slider::rotarySliderOutlineColourId, juce::Colours::black); // rotery background (niezaznaczony obszar)
     }
+
+    // Labels settings
+    addAndMakeVisible(reverbLabelGroup);
+    addAndMakeVisible(eqLabelGroup);
+
+    for (auto* label : getReverbLabels()) {
+        reverbLabelGroup.addAndMakeVisible(label);
+        label->setJustificationType(juce::Justification::centred);
+    }
+
+    for (auto* label : getEqLabels()) {
+        eqLabelGroup.addAndMakeVisible(label);
+        label->setJustificationType(juce::Justification::centred);
+    }
+
+    reverbLabelGroup.setColour(juce::GroupComponent::outlineColourId, juce::Colours::transparentBlack);
+    eqLabelGroup.setColour(juce::GroupComponent::outlineColourId, juce::Colours::transparentBlack);
+
+    roomSizeLabel.setText("Room", juce::NotificationType::dontSendNotification);
+    dampingLabel.setText("Damping", juce::NotificationType::dontSendNotification);
+    dryLevelLabel.setText("Dry", juce::NotificationType::dontSendNotification);
+    wetLevelLabel.setText("Wet", juce::NotificationType::dontSendNotification);
+    widthLabel.setText("Width", juce::NotificationType::dontSendNotification);
+
+    lowCutLabel.setText("Low Cut", juce::NotificationType::dontSendNotification);
+    highCutLabel.setText("High Cut", juce::NotificationType::dontSendNotification);
 }
 
 DemoReverbAudioProcessorEditor::~DemoReverbAudioProcessorEditor()
@@ -98,22 +144,39 @@ void DemoReverbAudioProcessorEditor::resized()
 {
     // reverb sliders placement
     reverbSliderGroup.setBounds(20, 90, 460, 90);
-    auto reverbArea = reverbSliderGroup.getLocalBounds();
+    auto reverbSliderArea = reverbSliderGroup.getLocalBounds();
 
-    int w = reverbArea.getWidth() / 5;
+    int w = reverbSliderArea.getWidth() / 5;
 
-    roomSizeSlider.setBounds(reverbArea.removeFromLeft(w).reduced(5));
-    dampingSlider.setBounds(reverbArea.removeFromLeft(w).reduced(5));
-    dryLevelSlider.setBounds(reverbArea.removeFromLeft(w).reduced(5));
-    wetLevelSlider.setBounds(reverbArea.removeFromLeft(w).reduced(5));
-    widthSlider.setBounds(reverbArea.reduced(5));
+    roomSizeSlider.setBounds(reverbSliderArea.removeFromLeft(w).reduced(5));
+    dampingSlider.setBounds(reverbSliderArea.removeFromLeft(w).reduced(5));
+    dryLevelSlider.setBounds(reverbSliderArea.removeFromLeft(w).reduced(5));
+    wetLevelSlider.setBounds(reverbSliderArea.removeFromLeft(w).reduced(5));
+    widthSlider.setBounds(reverbSliderArea.reduced(5));
+
+    // reverb labels
+    reverbLabelGroup.setBounds(20, 175, 460, 25);
+    auto reverbLabelArea = reverbLabelGroup.getLocalBounds();
+
+    roomSizeLabel.setBounds(reverbLabelArea.removeFromLeft(w).reduced(5));
+    dampingLabel.setBounds(reverbLabelArea.removeFromLeft(w).reduced(5));
+    dryLevelLabel.setBounds(reverbLabelArea.removeFromLeft(w).reduced(5));
+    wetLevelLabel.setBounds(reverbLabelArea.removeFromLeft(w).reduced(5));
+    widthLabel.setBounds(reverbLabelArea.reduced(5));
+
+    // eq text labels
+    eqLabelGroup.setBounds(20, 210, 460, 25);
+    auto eqLabelArea = eqLabelGroup.getLocalBounds();
+
+    w = eqLabelArea.getWidth() / 2;
+
+    lowCutLabel.setBounds(eqLabelArea.removeFromLeft(w).reduced(5));
+    highCutLabel.setBounds(eqLabelArea.reduced(5));
 
     // eq sliders placement
     eqSliderGroup.setBounds(20, 220, 460, 70);
-    auto eqArea = eqSliderGroup.getLocalBounds();
+    auto eqSliderArea = eqSliderGroup.getLocalBounds();
 
-    w = eqArea.getWidth() / 2;
-
-    lowCutSlider.setBounds(eqArea.removeFromLeft(w).reduced(5));
-    highCutSlider.setBounds(eqArea.reduced(5));
+    lowCutSlider.setBounds(eqSliderArea.removeFromLeft(w).reduced(5));
+    highCutSlider.setBounds(eqSliderArea.reduced(5));
 }
