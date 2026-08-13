@@ -99,7 +99,8 @@ DemoReverbAudioProcessorEditor::DemoReverbAudioProcessorEditor (DemoReverbAudioP
 
         slider->setColour(juce::Slider::rotarySliderOutlineColourId, juce::Colours::black); // rotery background (niezaznaczony obszar)
 
-        slider->setColour(juce::Slider::textBoxTextColourId, foregroundColor);
+        slider->setColour(juce::Slider::textBoxTextColourId, foregroundColor); // tekst textboxa
+        slider->setColour(juce::Slider::textBoxOutlineColourId, sliderBackgroundColor); // ramka textboxa
         slider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
     }
 
