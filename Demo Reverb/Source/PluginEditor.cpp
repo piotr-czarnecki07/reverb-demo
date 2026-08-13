@@ -151,14 +151,13 @@ void DemoReverbAudioProcessorEditor::resized()
 
     int w = reverbSliderArea.getWidth() / 5;
 
-    roomSizeSlider.setBounds(reverbSliderArea.removeFromLeft(w).reduced(5));
-    dampingSlider.setBounds(reverbSliderArea.removeFromLeft(w).reduced(5));
-    dryLevelSlider.setBounds(reverbSliderArea.removeFromLeft(w).reduced(5));
-    wetLevelSlider.setBounds(reverbSliderArea.removeFromLeft(w).reduced(5));
-    widthSlider.setBounds(reverbSliderArea.reduced(5));
+    for (auto* slider : getReverbSliders()) {
+        auto slot = reverbSliderArea.removeFromLeft(w);
+        slider->setBounds(slot.withSizeKeepingCentre(50, slot.getHeight()));
+    }
 
     // reverb labels
-    reverbLabelGroup.setBounds(20, 175, 460, 25);
+    reverbLabelGroup.setBounds(20, 180, 460, 25);
     auto reverbLabelArea = reverbLabelGroup.getLocalBounds();
 
     roomSizeLabel.setBounds(reverbLabelArea.removeFromLeft(w).reduced(5));
